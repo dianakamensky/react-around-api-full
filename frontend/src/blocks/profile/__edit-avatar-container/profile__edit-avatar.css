@@ -1,0 +1,18 @@
+.profile__edit-avatar-container {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+  top: 0;
+}
+
+.profile__edit-avatar-container:hover {
+  background: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
+.profile__edit-avatar-container:hover .profile__edit-avatar {
+  opacity: 100%;
+}

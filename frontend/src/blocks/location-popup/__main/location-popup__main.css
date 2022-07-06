@@ -1,0 +1,9 @@
+.location-popup__main {
+    width: 433px;
+    max-width: 75vw;
+    max-height: 75vh;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}

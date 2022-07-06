@@ -1,0 +1,9 @@
+.profile__name-container {
+    display: flex;
+}
+
+@media all and (min-width: 320px) and (max-width: 766px) {
+    .profile__name-container {
+        margin: auto;
+    }
+}

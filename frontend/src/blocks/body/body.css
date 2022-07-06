@@ -1,0 +1,8 @@
+body {
+  background-color: #000000;
+  font-family: "Inter", sans-serif;
+  max-width: 880px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}

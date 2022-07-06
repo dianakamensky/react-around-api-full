@@ -1,0 +1,21 @@
+.footer {
+  margin-bottom: 60px;
+}
+
+@media all and (min-width: 767px) and (max-width: 1000px) {
+  .footer {
+    width: 83%;
+  }
+}
+
+@media all and (min-width: 320px) and (max-width: 766px) {
+  .footer {
+    width: 88.125%;
+  }
+}
+
+@media all and (min-width: 320px) and (max-width: 1000px) {
+  .footer {
+    margin: 0 auto 36px auto;
+  }
+}

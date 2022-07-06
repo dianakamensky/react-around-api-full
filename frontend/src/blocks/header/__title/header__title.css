@@ -1,0 +1,10 @@
+.header__title {
+    width: 173px;
+}
+
+@media all and (min-width: 320px) and (max-width: 766px) {
+    .header__title {
+        width: 126px;
+        margin-left: 8.43%;
+    }
+}

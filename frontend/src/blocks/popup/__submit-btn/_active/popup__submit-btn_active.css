@@ -1,0 +1,11 @@
+.popup__submit-btn_active {
+    background: #000000;
+    color: #ffffff;
+    opacity: 1;
+    border: none;
+}
+
+.popup__submit-btn_active:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }

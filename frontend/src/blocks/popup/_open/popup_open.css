@@ -1,0 +1,7 @@
+.popup_open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transition: visibility 0ms 0ms, opacity 600ms 0ms;
+    z-index: 100;
+}
