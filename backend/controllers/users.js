@@ -10,11 +10,19 @@ function getUsers(req, res) {
     .catch((err) => checkError(err, res));
 }
 
-function getUser(req, res) {
-  User.findById(req.params.id)
+function _getUser(id, res) {
+  User.findById(id)
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => checkError(err, res));
+}
+
+function getUser(req, res) {
+  return _getUser(req.params.id, res);
+}
+
+function getMe(req, res) {
+  return _getUser(req.user._id, res);
 }
 
 function createUser(req, res) {
@@ -84,6 +92,7 @@ function login(req, res) {
 module.exports = {
   getUsers,
   getUser,
+  getMe,
   createUser,
   updateAvatar,
   updateProfile,
