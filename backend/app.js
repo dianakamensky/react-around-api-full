@@ -7,6 +7,8 @@ const { PORT = 3000 } = process.env;
 const app = express();
 app.use(express.json());
 
+const { handleError } = require("./utils/errors.js");
+
 mongoose.connect("mongodb://localhost:27017/aroundb");
 
 app.post("/signin", login);
@@ -19,3 +21,6 @@ require("./routes/users");
 router.get("*", (req, res) => {
   res.status(404).send({ message: "Requested resource not found" });
 });
+
+app.use((err, req, res, next) => handleError(err, res));
+
