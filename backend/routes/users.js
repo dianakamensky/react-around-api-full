@@ -1,9 +1,10 @@
-const { router, Joi, celebrate, validateUrl } = require("./utils");
+const { router, Joi, celebrate, validateURL } = require("./utils");
 const {
   getUsers,
   getUser,
   updateProfile,
   updateAvatar,
+  getMe,
 } = require("../controllers/users");
 
 router.get("/users", getUsers);
@@ -25,7 +26,7 @@ router.patch(
   "/users/me/avatar",
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string().custom(validateUrl),
+      avatar: Joi.string().custom(validateURL),
     }),
   }),
   updateAvatar
