@@ -1,10 +1,8 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
-const jwt = require("jsonwebtoken");
 const { NotFoundError, UnauthorizedError } = require("../utils/errors");
-const { NODE_ENV, JWT_SECRET } = process.env;
-
-const notFound = new NotFoundError('User not found');
+const { createToken } = require("../utils/jwt");
+const notFound = new NotFoundError("User not found");
 
 function getUsers(req, res, next) {
   User.find({})
@@ -67,21 +65,15 @@ function login(req, res, next) {
     .select("+password")
     .then((user) => {
       if (!user) {
-        return Promise.reject(new UnauthorizedError);
+        return Promise.reject(new UnauthorizedError());
       }
       return bcrypt.compare(password, user.password);
     })
     .then((matched) => {
       if (!matched) {
-        return Promise.reject(new UnauthorizedError);
+        return Promise.reject(new UnauthorizedError());
       }
-      const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-        {
-          expiresIn: "7d",
-        }
-      );
+      const token = createToken(user._id);
       res.send({ token });
     })
     .catch(next);

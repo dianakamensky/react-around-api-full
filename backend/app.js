@@ -6,14 +6,14 @@ const auth = require("./middleware/auth");
 const { PORT = 3000 } = process.env;
 const app = express();
 app.use(express.json());
-const { requestLogger, errorLogger } = require("./middlewares/logger");
+const { requestLogger, errorLogger } = require("./middleware/logger");
 const { handleError } = require("./utils/errors");
 
 mongoose.connect("mongodb://localhost:27017/aroundb");
 app.use(requestLogger);
 app.post("/signin", login);
 app.post("/signup", createUser);
-app.listen(PORT, () => {});
+app.use(auth);
 app.use("/", router);
 require("./routes/cards");
 require("./routes/users");
@@ -24,3 +24,4 @@ router.get("*", (req, res) => {
 });
 
 app.use((err, req, res, next) => handleError(err, res));
+app.listen(PORT, () => {});
