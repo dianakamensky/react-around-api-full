@@ -1,4 +1,4 @@
-const { NotFoundError, UnauthorizedError } = require("../utils/errors");
+const { NotFoundError, UnauthorizedError, ForbiddenError } = require("../utils/errors");
 const Card = require('../models/card');
 
 const notFound = new NotFoundError('Card not found');
@@ -10,9 +10,16 @@ function getCards(req, res, next) {
 }
 
 function deleteCard(req, res, next) {
-  Card.findByIdAndRemove(req.params.id)
+  Card.findById(req.params.id)
     .orFail(notFound)
-    .then((card) => res.send({ data: card }))
+    .then((card) => {
+      if (card.owner === req.user._id) {
+        Card.deleteOne({ _id: card._id })
+          .then((card) => res.send({ data: card }))
+      } else {
+        throw new ForbiddenError("Card does not belong to user");
+      }
+    })
     .catch(next);
 }
 
