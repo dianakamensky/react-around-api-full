@@ -1,79 +1,79 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const { checkError } = require("./utils");
+const { NotFoundError, UnauthorizedError } = require("../utils/errors");
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-function getUsers(req, res) {
+const notFound = new NotFoundError('User not found');
+
+function getUsers(req, res, next) {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch((err) => checkError(err, res));
+    .catch(next);
 }
 
-function _getUser(id, res) {
+function _getUser(id, res, next) {
   User.findById(id)
-    .orFail()
+    .orFail(notFound)
     .then((user) => res.send({ data: user }))
-    .catch((err) => checkError(err, res));
+    .catch(next);
 }
 
-function getUser(req, res) {
+function getUser(req, res, next) {
   return _getUser(req.params.id, res);
 }
 
-function getMe(req, res) {
+function getMe(req, res, next) {
   return _getUser(req.user._id, res);
 }
 
-function createUser(req, res) {
+function createUser(req, res, next) {
   const { name, about, avatar, email, password } = req.body;
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((user) => res.send({ data: user }))
-    .catch((err) => checkError(err, res));
+    .catch(next);
 }
 
-function getMe() {}
-
-function updateProfile(req, res) {
+function updateProfile(req, res, next) {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
     { new: true, runValidators: true }
   )
-    .orFail()
+    .orFail(notFound)
     .then((user) => res.send({ data: user }))
-    .catch((err) => checkError(err, res));
+    .catch(next);
 }
 
-function updateAvatar(req, res) {
+function updateAvatar(req, res, next) {
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
     { avatar },
     { new: true, runValidators: true }
   )
-    .orFail()
+    .orFail(notFound)
     .then((user) => res.send({ data: user }))
-    .catch((err) => checkError(err, res));
+    .catch(next);
 }
 
-function login(req, res) {
+function login(req, res, next) {
   const { email, password } = req.body;
 
   User.findOne({ email })
     .select("+password")
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error("Incorrect password or email"));
+        return Promise.reject(new UnauthorizedError);
       }
       return bcrypt.compare(password, user.password);
     })
     .then((matched) => {
       if (!matched) {
-        return Promise.reject(new Error("Incorrect password or email"));
+        return Promise.reject(new UnauthorizedError);
       }
       const token = jwt.sign(
         { _id: user._id },
@@ -84,9 +84,7 @@ function login(req, res) {
       );
       res.send({ token });
     })
-    .catch((err) => {
-      res.status(401).send({ message: err.message });
-    });
+    .catch(next);
 }
 
 module.exports = {

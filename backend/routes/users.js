@@ -1,4 +1,4 @@
-const { router } = require("./utils");
+const { router, Joi, celebrate } = require("./utils");
 const {
   getUsers,
   getUser,
@@ -10,8 +10,25 @@ router.get("/users", getUsers);
 
 router.get("/users/:id", getUser);
 
-router.patch("/users/me", updateProfile);
+router.patch(
+  "/users/me",
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().min(2).max(30),
+      about: Joi.string().min(2).max(30),
+    }),
+  }),
+  updateProfile
+);
 
-router.patch("/users/me/avatar", updateAvatar);
+router.patch(
+  "/users/me/avatar",
+  celebrate({
+    body: Joi.object().keys({
+      avatar: Joi.string().custom(validateUrl),
+    }),
+  }),
+  updateAvatar
+);
 
 router.get("/users/me", getMe);

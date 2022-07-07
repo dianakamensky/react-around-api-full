@@ -7,7 +7,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 app.use(express.json());
 
-const { handleError } = require("./utils/errors.js");
+const { handleError } = require("./utils/errors");
 
 mongoose.connect("mongodb://localhost:27017/aroundb");
 
