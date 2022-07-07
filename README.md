@@ -6,3 +6,4 @@ This repository contains the full API of "Around the U.S." project that features
 
 - [Github project](https://github.com/dianakamensky/react-around-api-full.git)
 - [Api host](https://api.around.students.nomoredomainssbs.ru)
+- [Website](https://around.students.nomoredomainssbs.ru)

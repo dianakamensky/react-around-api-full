@@ -1,7 +1,11 @@
-const { NotFoundError, UnauthorizedError, ForbiddenError } = require("../utils/errors");
-const Card = require('../models/card');
+const {
+  NotFoundError,
+  UnauthorizedError,
+  ForbiddenError,
+} = require("../utils/errors");
+const Card = require("../models/card");
 
-const notFound = new NotFoundError('Card not found');
+const notFound = new NotFoundError("Card not found");
 
 function getCards(req, res, next) {
   Card.find({})
@@ -13,9 +17,10 @@ function deleteCard(req, res, next) {
   Card.findById(req.params.id)
     .orFail(notFound)
     .then((card) => {
-      if (card.owner === req.user._id) {
-        Card.deleteOne({ _id: card._id })
-          .then((card) => res.send({ data: card }))
+      if (card.owner._id.toString() === req.user._id.toString()) {
+        Card.deleteOne({ _id: card._id }).then((card) =>
+          res.send({ data: card })
+        );
       } else {
         throw new ForbiddenError("Card does not belong to user");
       }
@@ -34,7 +39,7 @@ function likeCard(req, res, next) {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true },
+    { new: true }
   )
     .orFail(notFound)
     .then((card) => res.send({ data: card }))
@@ -45,7 +50,7 @@ function unlikeCard(req, res, next) {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true },
+    { new: true }
   )
     .orFail(notFound)
     .then((card) => res.send({ data: card }))

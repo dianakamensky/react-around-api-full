@@ -1,4 +1,4 @@
-export const BASE_URL = "https://register.nomoreparties.co";
+export const BASE_URL = "https://api.around.students.nomoredomainssbs.ru";
 
 function request(
   path,
