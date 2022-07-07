@@ -26,6 +26,8 @@ function createUser(req, res) {
     .catch((err) => checkError(err, res));
 }
 
+function getMe() {}
+
 function updateProfile(req, res) {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
@@ -54,6 +56,7 @@ function login(req, res) {
   const { email, password } = req.body;
 
   User.findOne({ email })
+    .select("+password")
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error("Incorrect password or email"));

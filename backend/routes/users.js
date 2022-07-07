@@ -1,18 +1,17 @@
-const { router } = require('./utils');
+const { router } = require("./utils");
 const {
   getUsers,
   getUser,
-  createUser,
   updateProfile,
   updateAvatar,
-} = require('../controllers/users');
+} = require("../controllers/users");
 
-router.get('/users', getUsers);
+router.get("/users", getUsers);
 
-router.get('/users/:id', getUser);
+router.get("/users/:id", getUser);
 
-router.post('/users', createUser);
+router.patch("/users/me", updateProfile);
 
-router.patch('/users/me', updateProfile);
+router.patch("/users/me/avatar", updateAvatar);
 
-router.patch('/users/me/avatar', updateAvatar);
+router.get("/users/me", getMe);
