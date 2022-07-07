@@ -1,4 +1,4 @@
-const { router, Joi, celebrate } = require("./utils");
+const { router, Joi, celebrate, validateUrl } = require("./utils");
 const {
   getUsers,
   getUser,
