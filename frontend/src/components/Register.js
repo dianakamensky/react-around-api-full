@@ -23,7 +23,6 @@ class Register extends React.Component {
   }
 
   handleSubmit = (e) => {
-    console.log("diana");
     e.preventDefault();
     auth
       .register(this.state.email, this.state.password)
