@@ -5,9 +5,13 @@ export default class Api {
   }
 
   _request(path, method, body) {
+    const jwt = localStorage.getItem("jwt");
+    const headers = jwt
+      ? { authorization: `Bearer ${jwt}`, ...this._headers }
+      : this._headers;
     return fetch(`${this._url}/${path}`, {
       method,
-      headers: this._headers,
+      headers: headers,
       body: JSON.stringify(body),
     }).then((res) => {
       if (res.ok) {
