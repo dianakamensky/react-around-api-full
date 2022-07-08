@@ -1,4 +1,3 @@
-const router = require("express").Router();
 const { celebrate, Joi } = require("celebrate");
 const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
@@ -6,4 +5,4 @@ const validateURL = (value, helpers) => {
   }
   return helpers.error("string.uri");
 };
-module.exports = { router, celebrate, Joi, validateURL };
+module.exports = { celebrate, Joi, validateURL };
