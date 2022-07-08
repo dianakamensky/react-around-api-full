@@ -7,7 +7,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 app.use(express.json());
 const { requestLogger, errorLogger } = require("./middleware/logger");
-const { handleError } = require("./utils/errors");
+const { handleError, NotFoundError, HttpError } = require("./utils/errors");
 const { login, createUser } = require("./controllers/users");
 const { Joi, celebrate, errors } = require("celebrate");
 mongoose.connect("mongodb://localhost:27017/aroundb");
@@ -19,7 +19,7 @@ app.options("*", cors());
 
 app.get("/crash-test", () => {
   setTimeout(() => {
-    throw new Error("Server will crash now");
+    throw new HttpError("Server will crash now");
   }, 0);
 });
 
@@ -55,8 +55,8 @@ app.use("/users", require("./routes/users"));
 
 app.use(errors());
 
-app.get("*", (req, res) => {
-  res.status(404).send({ message: "Requested resource not found" });
+app.get("*", (req, res, next) => {
+  next(new NotFoundError("Requested resource not found"));
 });
 
 app.use((err, req, res, next) => handleError(err, res));

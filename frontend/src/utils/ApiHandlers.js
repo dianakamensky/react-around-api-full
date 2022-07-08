@@ -22,31 +22,31 @@ export default class Api {
   }
 
   getInitialCards() {
-    return this._request("/cards", "GET");
+    return this._request("cards", "GET");
   }
 
   getUserInfo() {
-    return this._request("/users/me", "GET");
+    return this._request("users/me", "GET");
   }
 
   updateCardLike(id, like) {
     const method = like ? "DELETE" : "PUT";
-    return this._request(`/cards/likes/${id}`, method);
+    return this._request(`cards/likes/${id}`, method);
   }
 
   deleteCard(id) {
-    return this._request(`/cards/${id}`, "DELETE");
+    return this._request(`cards/${id}`, "DELETE");
   }
 
   saveProfile(data) {
-    return this._request("/users/me", "PATCH", data);
+    return this._request("users/me", "PATCH", data);
   }
 
   saveLocation(data) {
-    return this._request("/cards", "POST", data);
+    return this._request("cards", "POST", data);
   }
 
   saveAvatar(link) {
-    return this._request("/users/me/avatar", "PATCH", { avatar: link });
+    return this._request("users/me/avatar", "PATCH", { avatar: link });
   }
 }

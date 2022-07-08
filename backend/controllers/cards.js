@@ -8,9 +8,7 @@ const Card = require("../models/card");
 const notFound = new NotFoundError("Card not found");
 
 function getCards(req, res, next) {
-  Card.find({})
-    .then((cards) => res.send({ data: cards }))
-    .catch(next);
+  Card.find({}).then(res.send).catch(next);
 }
 
 function deleteCard(req, res, next) {
