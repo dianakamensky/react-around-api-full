@@ -8,7 +8,7 @@ const Card = require("../models/card");
 const notFound = new NotFoundError("Card not found");
 
 function getCards(req, res, next) {
-  Card.find({}).then(res.send).catch(next);
+  Card.find({}).then(data => res.send({data})).catch(next);
 }
 
 function deleteCard(req, res, next) {
@@ -16,7 +16,7 @@ function deleteCard(req, res, next) {
     .orFail(notFound)
     .then((card) => {
       if (card.owner._id.toString() === req.user._id.toString()) {
-        Card.deleteOne({ _id: card._id }).then(res.send);
+        Card.deleteOne({ _id: card._id }).then(data => res.send({data}));
       } else {
         throw new ForbiddenError("Card does not belong to user");
       }
@@ -26,7 +26,7 @@ function deleteCard(req, res, next) {
 
 function createCard(req, res, next) {
   const { name, link } = req.body;
-  Card.create({ name, link, owner: req.user._id }).then(res.send).catch(next);
+  Card.create({ name, link, owner: req.user._id }).then(data => res.send({data})).catch(next);
 }
 
 function likeCard(req, res, next) {
@@ -36,7 +36,7 @@ function likeCard(req, res, next) {
     { new: true }
   )
     .orFail(notFound)
-    .then(res.send)
+    .then(data => res.send({data}))
     .catch(next);
 }
 
@@ -47,7 +47,7 @@ function unlikeCard(req, res, next) {
     { new: true }
   )
     .orFail(notFound)
-    .then(res.send)
+    .then(data => res.send({data}))
     .catch(next);
 }
 

@@ -5,13 +5,13 @@ const { createToken } = require("../utils/jwt");
 const notFound = new NotFoundError("User not found");
 
 function getUsers(req, res, next) {
-  User.find({}).then(res.send).catch(next);
+  User.find({}).then(data => res.send({data})).catch(next);
 }
 
 function _getUser(id, res, next) {
   User.findById(id)
     .orFail(notFound)
-    .then((user) => res.send({ data: user }))
+    .then((data) => res.send({ data }))
     .catch(next);
 }
 
@@ -28,7 +28,7 @@ function createUser(req, res, next) {
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
-    .then(res.send)
+    .then(data => res.send({data}))
     .catch(next);
 }
 
@@ -40,7 +40,7 @@ function updateProfile(req, res, next) {
     { new: true, runValidators: true }
   )
     .orFail(notFound)
-    .then(res.send)
+    .then(data => res.send({data}))
     .catch(next);
 }
 
@@ -52,7 +52,7 @@ function updateAvatar(req, res, next) {
     { new: true, runValidators: true }
   )
     .orFail(notFound)
-    .then(res.send)
+    .then(data => res.send({data}))
     .catch(next);
 }
 

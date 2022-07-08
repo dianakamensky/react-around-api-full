@@ -145,7 +145,7 @@ function App(props) {
   function getCards() {
     api
       .getInitialCards()
-      .then(setCards)
+      .then((res) => setCards(res.data))
       .catch((err) => window.alert(`Error loading initial cards: ${err}`));
   }
 
