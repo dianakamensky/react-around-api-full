@@ -29,7 +29,8 @@ class NotFoundError extends HttpError {
   }
 }
 function handleError(err, res) {
-  const { statusCode = 500, message } = err;
+  const { statusCode = 500 } = err;
+  const message = err.toString();
   res.status(statusCode).send({ message });
 }
 

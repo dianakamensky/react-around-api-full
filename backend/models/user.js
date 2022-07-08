@@ -17,10 +17,10 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: "../avatar.jpg",
+    default: "https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg",
     validate: {
       validator(v) {
-        return v.match(linkregex) || v === "";
+        return v.match(linkregex);
       },
       message: "Please enter a valid url",
     },
