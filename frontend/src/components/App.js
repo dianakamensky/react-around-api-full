@@ -71,7 +71,7 @@ function App(props) {
   function initCurrentUser() {
     api
       .getUserInfo()
-      .then((user) => setCurrentUser(user))
+      .then((res) => setCurrentUser(res.data))
       .catch((error) => console.log(error));
   }
 
@@ -80,10 +80,10 @@ function App(props) {
 
     api
       .updateCardLike(card._id, isLiked)
-      .then((newCard) => {
+      .then((res) => {
         setCards((state) =>
           state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard
+            currentCard._id === card._id ? res.data : currentCard
           )
         );
       })
@@ -114,7 +114,7 @@ function App(props) {
   function handleUpdateUser(info) {
     api
       .saveProfile(info)
-      .then((response) => setCurrentUser(response))
+      .then((response) => setCurrentUser(response.data))
       .then(closeAllPopups)
       .catch((error) => console.log(error));
   }
@@ -122,7 +122,7 @@ function App(props) {
   function handleUpdateAvatar(link) {
     api
       .saveAvatar(link)
-      .then((response) => setCurrentUser(response))
+      .then((response) => setCurrentUser(response.data))
       .then(closeAllPopups)
       .catch((error) => console.log(error));
   }
@@ -130,7 +130,7 @@ function App(props) {
   function handleAddPlaceSubmit(info) {
     api
       .saveLocation(info)
-      .then((newCard) => setCards([newCard, ...cards]))
+      .then((newCard) => setCards([newCard.data, ...cards]))
       .then(closeAllPopups)
       .catch((error) => console.log(error));
   }
