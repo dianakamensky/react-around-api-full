@@ -9,7 +9,10 @@ function getUsers(req, res, next) {
 }
 
 function _getUser(id, res, next) {
-  User.findById(id).orFail(notFound).then(res.send).catch(next);
+  User.findById(id)
+    .orFail(notFound)
+    .then((user) => res.send({ data: user }))
+    .catch(next);
 }
 
 function getUser(req, res, next) {
