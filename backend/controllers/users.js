@@ -67,14 +67,10 @@ function login(req, res, next) {
       if (!user) {
         return Promise.reject(new UnauthorizedError());
       }
-      return bcrypt.compare(password, user.password);
-    })
-    .then((matched) => {
-      if (!matched) {
-        return Promise.reject(new UnauthorizedError());
-      }
-      const token = createToken(user._id);
-      res.send({ token });
+      if (bcrypt.compare(password, user.password)) {
+        const token = createToken(user._id);
+        res.send({ token });
+      } else return Promise.reject(new UnauthorizedError());
     })
     .catch(next);
 }
