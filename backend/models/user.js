@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     default: "../avatar.jpg",
     validate: {
       validator(v) {
-        return v.match(linkregex);
+        return v.match(linkregex) || v === "";
       },
       message: "Please enter a valid url",
     },

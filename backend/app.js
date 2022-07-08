@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { router } = require("./routes/utils");
 require("dotenv").config();
 const auth = require("./middleware/auth");
 const cors = require("cors");
@@ -10,8 +9,7 @@ app.use(express.json());
 const { requestLogger, errorLogger } = require("./middleware/logger");
 const { handleError } = require("./utils/errors");
 const { login, createUser } = require("./controllers/users");
-const { errors } = require("celebrate");
-const { Joi, celebrate } = require("celebrate");
+const { Joi, celebrate, errors } = require("celebrate");
 mongoose.connect("mongodb://localhost:27017/aroundb");
 
 app.use(requestLogger);
@@ -24,6 +22,7 @@ app.get("/crash-test", () => {
     throw new Error("Server will crash now");
   }, 0);
 });
+
 app.post(
   "/signin",
   celebrate({
@@ -34,6 +33,7 @@ app.post(
   }),
   login
 );
+
 app.post(
   "/signup",
   celebrate({
@@ -47,15 +47,20 @@ app.post(
   }),
   createUser
 );
+
 app.use(auth);
-app.use("/", router);
-require("./routes/cards");
-require("./routes/users");
-app.use(errorLogger);
+
+app.use("/cards", require("./routes/cards"));
+app.use("/users", require("./routes/users"));
+
 app.use(errors());
-router.get("*", (req, res) => {
+
+app.get("*", (req, res) => {
   res.status(404).send({ message: "Requested resource not found" });
 });
 
 app.use((err, req, res, next) => handleError(err, res));
+
+app.use(errorLogger);
+
 app.listen(PORT, () => {});
