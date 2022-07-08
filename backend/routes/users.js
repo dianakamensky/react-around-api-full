@@ -10,6 +10,8 @@ const {
 
 router.get("/", getUsers);
 
+router.get("/me", getMe);
+
 router.get("/:id", getUser);
 
 router.patch(
@@ -32,7 +34,5 @@ router.patch(
   }),
   updateAvatar
 );
-
-router.get("/me", getMe);
 
 module.exports = router;
