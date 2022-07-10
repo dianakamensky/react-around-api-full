@@ -28,8 +28,6 @@ function App(props) {
   const [navLink, setNavLink] = React.useState("");
   const location = useLocation();
 
-  React.useEffect(initCurrentUser, []);
-
   React.useEffect(getCards, []);
 
   React.useEffect(initLoggedIn, [location.pathname, props.history]);
@@ -50,28 +48,19 @@ function App(props) {
   }
 
   function initLoggedIn() {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      api
-        .getUserInfo()
-        .then((res) => {
-          if (res) {
-            setLoggedIn(res.data.email);
-            props.history.push("/");
-          } else setLoggedIn(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoggedIn(false);
-        });
-    } else setLoggedIn(false);
-  }
-
-  function initCurrentUser() {
     api
       .getUserInfo()
-      .then((res) => setCurrentUser(res.data))
-      .catch((error) => console.log(error));
+      .then((res) => {
+        if (res) {
+          setLoggedIn(res.data.email);
+          setCurrentUser(res.data);
+          props.history.push("/");
+        } else setLoggedIn(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoggedIn(false);
+      });
   }
 
   function handleCardLike(card) {
