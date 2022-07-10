@@ -51,11 +51,11 @@ export default class Api {
   }
 
   register(email, password) {
-    this._request("signup", "POST", { password, email });
+    return this._request("signup", "POST", { password, email });
   }
 
   authorize(email, password) {
-    this._request("signin", "POST", { password, email }).then((data) => {
+    return this._request("signin", "POST", { password, email }).then((data) => {
       if (data.token) {
         localStorage.setItem("jwt", data.token);
       }
