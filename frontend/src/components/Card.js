@@ -18,10 +18,7 @@ function Card({ card, onCardLike, onCardDelete, setSelectedCard }) {
     onCardLike(card);
   }
 
-  // Checking if the current user is the owner of the current card
-  const isOwn = card.owner._id === currentUser._id;
-
-  // Creating a variable which you'll then set in `className` for the delete button
+  const isOwn = card.owner === currentUser._id;
 
   return (
     <article className="card">

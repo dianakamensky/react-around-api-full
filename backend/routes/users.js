@@ -1,4 +1,4 @@
-const { Joi, celebrate, validateURL } = require("./utils");
+const { Joi, celebrate } = require("celebrate");
 const router = require("express").Router();
 const {
   getUsers,
@@ -12,7 +12,15 @@ router.get("/", getUsers);
 
 router.get("/me", getMe);
 
-router.get("/:id", getUser);
+router.get(
+  "/:id",
+  celebrate({
+    params: Joi.object().keys({
+      id: Joi.string().hex().required().min(24).max(24),
+    }),
+  }),
+  getUser
+);
 
 router.patch(
   "/me",
@@ -29,7 +37,7 @@ router.patch(
   "/me/avatar",
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string().custom(validateURL),
+      avatar: Joi.string().uri(),
     }),
   }),
   updateAvatar
