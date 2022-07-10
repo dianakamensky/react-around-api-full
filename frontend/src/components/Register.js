@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import * as auth from "../utils/auth.js";
 import InfoTooltip from "./InfoTooltip.js";
+import api from "../utils/api";
 
 class Register extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class Register extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    auth
+    api
       .register(this.state.email, this.state.password)
       .then(() => {
         this.setState({

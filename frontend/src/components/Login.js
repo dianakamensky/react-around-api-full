@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import * as auth from "../utils/auth.js";
+import api from "../utils/api.js";
 
 class Login extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class Login extends React.Component {
     if (!this.state.email || !this.state.password) {
       return;
     }
-    auth
+    api
       .authorize(this.state.email, this.state.password)
       .then((data) => {
         if (data.token) {

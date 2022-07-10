@@ -29,9 +29,9 @@ export default class Api {
     return this._request("users/me", "GET");
   }
 
-  updateCardLike(id, like) {
-    const method = like ? "DELETE" : "PUT";
-    return this._request(`cards/likes/${id}`, method);
+  updateCardLike(id, isLiked) {
+    const method = isLiked ? "DELETE" : "PUT";
+    return this._request(`cards/${id}/likes`, method);
   }
 
   deleteCard(id) {
@@ -48,5 +48,18 @@ export default class Api {
 
   saveAvatar(link) {
     return this._request("users/me/avatar", "PATCH", { avatar: link });
+  }
+
+  register(email, password) {
+    this._request("signup", "POST", { password, email });
+  }
+
+  authorize(email, password) {
+    this._request("signin", "POST", { password, email }).then((data) => {
+      if (data.token) {
+        localStorage.setItem("jwt", data.token);
+      }
+      return data;
+    });
   }
 }

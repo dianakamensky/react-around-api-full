@@ -13,7 +13,6 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { Route, Switch, withRouter, useLocation } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
-import * as auth from "../utils/auth";
 
 function App(props) {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -53,8 +52,8 @@ function App(props) {
   function initLoggedIn() {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
-      auth
-        .checkToken(jwt)
+      api
+        .getUserInfo()
         .then((res) => {
           if (res) {
             setLoggedIn(res.data.email);
